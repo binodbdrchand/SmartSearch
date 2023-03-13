@@ -1,0 +1,263 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Dashboard";
+
+    var email = Context.Session.GetString("Email");
+    var isAuthenticated = Convert.ToBoolean(Context.Session.GetString("IsAuthenticated"));
+    var isAdmin = Convert.ToBoolean(Context.Session.GetString("IsAdmin"));
+}
+
+@section styles {
+    <style>
+        #document-grid thead, #video-grid thead {
+            background-color: darkgrey;
+        }
+        #document-grid tbody tr.odd, #video-grid tbody tr.odd {
+            border: 1px;
+            background-color: lightgray;
+        }
+        .dt-row, .dataTables_info, #video-grid_info, .dataTables_paginate {
+            padding-top: 50px;
+        }
+
+        .ui-autocomplete {
+            max-height: 400px;
+            border-radius: 10px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        }
+
+        .main-content {          
+          display: flex;
+          font-size: 30px;
+          justify-content: center;
+          align-content: center;
+          flex-direction: column;
+          /* Column | row */
+        }
+    </style>
+}
+
+@if (!isAuthenticated)
+{
+    Context.Response.Redirect("/");
+}
+
+<div class="containter">
+    <div id="header">
+        <img id="logo-image" src="~/image/banner-logo.png" />
+        <input type="text" id="search-input" placeholder="Search for keywords" />
+        <div id="action-buttons">
+            <button id="users" class="btn" onclick="location.href='@Url.Action("List", "Account", new { email = @email, isAdmin = @isAdmin })'">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="16" 
+                     height="16" 
+                     fill="currentColor" 
+                     class="bi bi-people" 
+                     viewBox="0 0 16 16">
+                       <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+                </svg>
+                Users
+            </button>
+            <button id="logout-button" class="btn" onclick="location.href='@Url.Action("Logout", "Account")'">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="16" 
+                     height="16" 
+                     fill="currentColor" 
+                     class="bi bi-box-arrow-left" 
+                     viewBox="0 0 16 16">
+                       <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                       <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                </svg>
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content text-center">
+        <p><strong>AI powered search.</strong></p>
+        <p>Using NLP Topic Modeling algorithm.</p>
+        <p>Search documents and videos by keywords.</p>
+    </div>
+
+    <div class="main tabs-wrapper initial-hide">
+        <div class="keyword-label"><p><i><b>Keyword: </b></i><span id="keyword-span"></span></></div>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-document-tab" data-bs-toggle="pill" data-bs-target="#pills-document" type="button" role="tab" aria-controls="pills-document" aria-selected="true">Document</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-video-tab" data-bs-toggle="pill" data-bs-target="#pills-video" type="button" role="tab" aria-controls="pills-video" aria-selected="false">Video</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-document" role="tabpanel" aria-labelledby="pills-document-tab">
+                <table id="document-grid">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Language</th>
+                            <th>Topic Number</th>
+                            <th>Topic Probability</th>
+                            <th>Has Keyword?</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
+                <table id="video-grid">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Language</th>
+                            <th>Topic Number</th>
+                            <th>Topic Probability</th>
+                            <th>Has Keyword?</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        /* autocomplete */
+        $(document).ready(function () {
+            $("#search-input").autocomplete({
+                source: function (req, res) {
+                    $.ajax({
+                        url: '@Url.Action("GetKeywordListForAutocomplete", "Dashboard")',
+                        type: "POST",
+                        data: { searchText: $("#search-input").val() },
+                        success: function (response) {
+                            res(response.data);
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $.ajax({
+                        url: '@Url.Action("GetDocumentsAndVideosForKeyword", "Dashboard")',
+                        type: "POST",
+                        data: { keyword: ui.item.value },
+                        success: function (response) {
+                            if (response.success) {
+
+                                // reset datatables
+                                $("#document-grid").DataTable().clear().destroy();
+                                $("#video-grid").DataTable().clear().destroy();
+
+                                // set label
+                                $("#keyword-label").text(`Keyword: "${ui.item.value}"`);
+
+                                // document datatable
+                                const d = $("#document-grid").DataTable({
+                                    "columnDefs": [
+                                        { "visible": false, "targets": [0, 2, 4] },
+                                        { "orderable": false, "targets": 7 },
+                                        { "className": "dt-center", "targets": [3, 5, 6] }
+                                    ],
+                                    "bAutoWidth": false, // Disable the auto width calculation
+                                    "aoColumns": [
+                                        { "sWidth": null },
+                                        { "sWidth": "40%" }, 
+                                        { "sWidth": null },
+                                        { "sWidth": "10%" },
+                                        { "sWidth": null },
+                                        { "sWidth": "15%" },
+                                        { "sWidth": "10%" },
+                                        { "sWidth": "10%" }
+                                    ],
+                                    "order": [[5, 'desc']],
+                                    "searching": false,
+                                });
+                                response.data.Document.forEach(row => {
+                                    const topicProbability = Number(row.topicProbabilty).toLocaleString(undefined, {style: 'percent', minimumFractionDigits: 2});
+                                    const hasKeyword = row.isInCorpus == true ? "Yes" : "No";
+                                    const viewPdf = `<a class="btn btn-primary" href="/Document/ViewPdf/${row.id}" target="_blank">View</a>`;
+                                    d.row.add([row.id, row.name, row.location, row.language, row.topicNumber, topicProbability, hasKeyword, viewPdf]).draw(true);
+                                });
+
+                                // video datatable
+                                const v = $("#video-grid").DataTable({
+                                    "columnDefs": [
+                                        { "visible": false, "targets": [0, 2, 4] },
+                                        { "orderable": false, "targets": 7 },
+                                        { "className": "dt-center", "targets": [3, 5, 6] }
+                                    ],
+                                    "bAutoWidth": false, // Disable the auto width calculation
+                                    "aoColumns": [
+                                        { "sWidth": null },
+                                        { "sWidth": "40%" }, 
+                                        { "sWidth": null },
+                                        { "sWidth": "10%" },
+                                        { "sWidth": null },
+                                        { "sWidth": "15%" },
+                                        { "sWidth": "10%" },
+                                        { "sWidth": "10%" }
+                                    ],
+                                    "order": [[5, 'desc']],
+                                    "searching": false,
+                                });
+                                response.data.Video.forEach(row => {
+                                    const topicProbability = Number(row.topicProbabilty).toLocaleString(undefined, {style: 'percent', minimumFractionDigits:2});
+                                    const hasKeyword = row.isInClipText == true ? "Yes" : "No";
+                                    const viewVideo = `<a class="btn btn-primary" href="/Video/ViewVideo?id=${row.id}&keyword=${ui.item.value}" target="_blank">View</a>`;
+                                    v.row.add([row.id, row.name, row.location, row.language, row.topicNumber, topicProbability, hasKeyword, viewVideo]).draw(true);
+                                });
+
+                                // set active tab & datatable
+                                if (response.data.Video.length > 0) {
+                                    $("#pills-document-tab").removeClass("active");
+                                    $("#pills-document").removeClass("show active");
+                                    $("#pills-video-tab").addClass("active");
+                                    $("#pills-video").addClass("show active");
+                                }
+                                if (response.data.Document.length > 0) {
+                                    $("#pills-video-tab").removeClass("active");
+                                    $("#pills-video").removeClass("show active");
+                                    $("#pills-document-tab").addClass("active");
+                                    $("#pills-document").addClass("show active");
+                                }
+
+                                $(".main-content").hide();
+                                $("#keyword-span").text(`"${ui.item.value}"`);
+                                $(".tabs-wrapper").show();
+                            }
+                        },
+                        error: function (filePath) {
+                            // set label
+                            $(".keyword-label").text("");
+                            $(".tabs-wrapper").hide();
+                            alert("error");
+                        }
+                    });
+
+                    // clear search text
+                    $(this).val("");
+                    return false;
+                },
+                minLength: 1
+            });
+        });
+
+        $("#logout-button").click(function() {
+
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "ViewVideo";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Video</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="~/lib/jquery-plugins/video-js/css/video-js.min.css" />
+    <link rel="stylesheet" href="~/lib/jquery-plugins/video-js-markers/css/videojs-markers.min.css" />
+    <style>
+        .video-js {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+            height: auto;
+            object-fit: fill;
+        }
+    </style>
+</head>
+<body>
+
+    <video id="mp4-video"
+        class="video-js vjs-default-skin"
+        controls 
+        width="1024" 
+        height="640"
+        preload="auto"
+        data-setup="{}"
+    >
+        <source src="~/temp/@ViewBag.FileName" type="video/mp4">
+    </video>
+
+    <script src="~/lib/jquery-plugins/video-js-markers/js/jquery-2.0.3.min.js"></script>
+    <script src="~/lib/jquery-plugins/video-js/js/video-js.min.js"></script>
+    <script src="~/lib/jquery-plugins/video-js-markers/js/videojs-markers.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const video = videojs("mp4-video");
+            
+            video.markers({
+                markers: @ViewBag.ClipStartList,
+                markerTip:{
+                    display: true,
+                    text(marker) { return `${convertHTMLEntity('@ViewBag.Keyword')}: ${Number(marker.time).toLocaleString(undefined, {style: 'decimal', maximumFractionDigits: 2})} s`; }
+                }
+            });
+
+            console.log($("mp4-video"));
+            $("mp4-video").removeAttr("style");
+        });
+
+        function convertHTMLEntity(text){
+            const span = document.createElement('span');
+
+            return text
+            .replace(/&[#A-Za-z0-9]+;/gi, (entity,position,text)=> {
+                span.innerHTML = entity;
+                return span.innerText;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "SmartSearch.Core.Domain": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:49785;http://localhost:49789"
+    }
+  }
+}

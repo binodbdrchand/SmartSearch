@@ -1,0 +1,224 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>57afde0b-d619-45f0-8ad6-7295d9bca640</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>document\main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>SmartSearch.AIModel</Name>
+    <RootNamespace>SmartSearch.AIModel</RootNamespace>
+    <InterpreterId>Global|VisualStudio|venv</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>"D:/SmartSearch/Data/Videos/AEG_abhaengige_Bauteile_ermitteln.mp4"</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="document\" />
+    <Folder Include="document\config\" />
+    <Folder Include="document\logs\" />
+    <Folder Include="document\models\" />
+    <Folder Include="document\output\" />
+    <Folder Include="document\transformations\" />
+    <Folder Include="document\utils\" />
+    <Folder Include="video\" />
+    <Folder Include="video\audio_dir\" />
+    <Folder Include="video\config\" />
+    <Folder Include="video\image_dir\" />
+    <Folder Include="video\logs\" />
+    <Folder Include="video\models\" />
+    <Folder Include="video\output\" />
+    <Folder Include="video\transformations\" />
+    <Folder Include="video\utils\" />
+    <Folder Include="video\utils\Tesseract-OCR\" />
+    <Folder Include="video\utils\Tesseract-OCR\doc\" />
+    <Folder Include="video\utils\Tesseract-OCR\tessdata\" />
+    <Folder Include="video\utils\Tesseract-OCR\tessdata\configs\" />
+    <Folder Include="video\utils\Tesseract-OCR\tessdata\script\" />
+    <Folder Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="document\config\model_config.py" />
+    <Compile Include="document\config\output_config.py" />
+    <Compile Include="document\file_logger.py" />
+    <Compile Include="document\main.py" />
+    <Compile Include="document\models\topic_model.py" />
+    <Compile Include="document\transformations\data_transformation.py" />
+    <Compile Include="document\utils\file_handling.py" />
+    <Compile Include="document\utils\preprocessing.py" />
+    <Compile Include="video\config\model_config.py" />
+    <Compile Include="video\config\output_config.py" />
+    <Compile Include="video\file_logger.py" />
+    <Compile Include="video\main.py" />
+    <Compile Include="video\models\topic_model.py" />
+    <Compile Include="video\transformations\data_transformation.py" />
+    <Compile Include="video\utils\file_handling.py" />
+    <Compile Include="video\utils\multitasking.py" />
+    <Compile Include="video\utils\preprocessing.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="document\logs\file_handling.log" />
+    <Content Include="document\models\lda_model.sav" />
+    <Content Include="document\models\trained_dictionary.pickle" />
+    <Content Include="document_requirements.txt" />
+    <Content Include="video\config\params.json" />
+    <Content Include="video\config\Videosconfig.ini" />
+    <Content Include="video\logs\videofile_handling.log" />
+    <Content Include="video\models\lda_model.sav" />
+    <Content Include="video\models\trained_dictionary.pickle" />
+    <Content Include="video\output\video_topic_keywords.json" />
+    <Content Include="video_requirements.txt" />
+    <Content Include="video\utils\Tesseract-OCR\ambiguous_words.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\ambiguous_words.exe" />
+    <Content Include="video\utils\Tesseract-OCR\classifier_tester.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\classifier_tester.exe" />
+    <Content Include="video\utils\Tesseract-OCR\cntraining.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\cntraining.exe" />
+    <Content Include="video\utils\Tesseract-OCR\combine_lang_model.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\combine_lang_model.exe" />
+    <Content Include="video\utils\Tesseract-OCR\combine_tessdata.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\combine_tessdata.exe" />
+    <Content Include="video\utils\Tesseract-OCR\dawg2wordlist.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\dawg2wordlist.exe" />
+    <Content Include="video\utils\Tesseract-OCR\doc\AUTHORS" />
+    <Content Include="video\utils\Tesseract-OCR\doc\LICENSE" />
+    <Content Include="video\utils\Tesseract-OCR\doc\README.md" />
+    <Content Include="video\utils\Tesseract-OCR\iconv.dll" />
+    <Content Include="video\utils\Tesseract-OCR\icudt64.dll" />
+    <Content Include="video\utils\Tesseract-OCR\icuin64.dll" />
+    <Content Include="video\utils\Tesseract-OCR\icuuc64.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libarchive-13.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libbz2-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libcairo-2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libcurl-4.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libeay32.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libexpat-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libffi-6.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libfontconfig-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libfreetype-6.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libgcc_s_seh-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libgif-7.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libglib-2.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libgobject-2.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libgomp-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libharfbuzz-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libidn2-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libintl-8.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libjbig-2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libjpeg-8.dll" />
+    <Content Include="video\utils\Tesseract-OCR\liblept-5.dll" />
+    <Content Include="video\utils\Tesseract-OCR\liblz4-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\liblzma-5.dll" />
+    <Content Include="video\utils\Tesseract-OCR\liblzo2-2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libnettle-6.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libnghttp2-14.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libopenjp2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpango-1.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpangocairo-1.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpangoft2-1.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpangowin32-1.0-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpcre-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpixman-1-0.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libpng16-16.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libssh2-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libstdc++-6.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libtesseract-5.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libtiff-5.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libunistring-2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libwebp-7.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libwinpthread-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libxml2-2.dll" />
+    <Content Include="video\utils\Tesseract-OCR\libzstd-1.dll" />
+    <Content Include="video\utils\Tesseract-OCR\lstmeval.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\lstmeval.exe" />
+    <Content Include="video\utils\Tesseract-OCR\lstmtraining.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\lstmtraining.exe" />
+    <Content Include="video\utils\Tesseract-OCR\merge_unicharsets.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\merge_unicharsets.exe" />
+    <Content Include="video\utils\Tesseract-OCR\mftraining.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\mftraining.exe" />
+    <Content Include="video\utils\Tesseract-OCR\set_unicharset_properties.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\set_unicharset_properties.exe" />
+    <Content Include="video\utils\Tesseract-OCR\shapeclustering.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\shapeclustering.exe" />
+    <Content Include="video\utils\Tesseract-OCR\ssleay32.dll" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\alto" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\ambigs.train" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\api_config" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\bigram" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\box.train" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\box.train.stderr" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\digits" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\get.images" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\hocr" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\inter" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\kannada" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\linebox" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\logfile" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\lstm.train" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\lstmbox" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\lstmdebug" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\makebox" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\pdf" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\quiet" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\rebox" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\strokewidth" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\tsv" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\txt" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\unlv" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\configs\wordstrbox" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\deu.traineddata" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\deu_frak.traineddata" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\eng.traineddata" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\eng.user-patterns" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\eng.user-words" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\jaxb-api-2.3.1.jar" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\osd.traineddata" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\pdf.ttf" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\piccolo2d-core-3.0.1.jar" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\piccolo2d-extras-3.0.1.jar" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\ScrollView.jar" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\batch" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\batch.nochop" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\matdemo" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\msdemo" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\nobatch" />
+    <Content Include="video\utils\Tesseract-OCR\tessdata\tessconfigs\segdemo" />
+    <Content Include="video\utils\Tesseract-OCR\tesseract-uninstall.exe" />
+    <Content Include="video\utils\Tesseract-OCR\tesseract.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\tesseract.exe" />
+    <Content Include="video\utils\Tesseract-OCR\text2image.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\text2image.exe" />
+    <Content Include="video\utils\Tesseract-OCR\unicharambigs.5.html" />
+    <Content Include="video\utils\Tesseract-OCR\unicharset.5.html" />
+    <Content Include="video\utils\Tesseract-OCR\unicharset_extractor.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\unicharset_extractor.exe" />
+    <Content Include="video\utils\Tesseract-OCR\winpath.exe" />
+    <Content Include="video\utils\Tesseract-OCR\wordlist2dawg.1.html" />
+    <Content Include="video\utils\Tesseract-OCR\wordlist2dawg.exe" />
+    <Content Include="video\utils\Tesseract-OCR\zlib1.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|VisualStudio|venv" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

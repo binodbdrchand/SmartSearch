@@ -1,0 +1,186 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using SmartSearch.Modules.UserManager.ViewModel;
+
+@model List<AppUserViewModel>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User::List";
+
+    var email = Context.Session.GetString("Email");
+    var isAuthenticated = Convert.ToBoolean(Context.Session.GetString("IsAuthenticated"));
+    var isAdmin = Convert.ToBoolean(Context.Session.GetString("IsAdmin"));
+}
+
+@if (!isAuthenticated)
+{
+    Context.Response.Redirect("/");
+}
+
+@section styles {
+    <style>
+        #user-grid thead {
+            background-color: darkgrey;
+        }
+        #user-grid tbody tr.odd {
+            border: 1px;
+            background-color: lightgray;
+        }
+        .dt-row, .dataTables_info, #video-grid_info, .dataTables_paginate {
+            padding-top: 50px;
+        }
+
+        .alert-success {
+            background-color: lightgreen;
+            margin: auto;
+            text-align: center;
+        }
+        .alert-danger {
+            background-color: lightcoral;
+            margin: auto;
+            text-align:center;
+        }
+    </style>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+}
+@if (TempData["FailureMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>@TempData["FailureMessage"]</strong>
+    </div>
+}
+
+<div class="containter">
+    <div id="header">
+        <img id="logo-image" src="~/image/banner-logo.png" />
+        <div id="action-buttons">
+            <button id="dashboard" class="btn" onclick="location.href='@Url.Action("Index", "Dashboard")'">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="16" 
+                        height="16" 
+                        fill="currentColor" 
+                        class="bi bi-speedometer2" 
+                        viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+                        <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+                </svg>
+                Dashboard
+            </button>
+            <button id="logout-button" class="btn" onclick="location.href='@Url.Action("Logout", "Account")'">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     width="16" 
+                     height="16" 
+                     fill="currentColor" 
+                     class="bi bi-box-arrow-left" 
+                     viewBox="0 0 16 16">
+                       <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                       <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                </svg>
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="main tabs-wrapper">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab">
+                @if (isAdmin)
+                {
+                    <div style="margin-bottom: 25px"><button id="create-user" class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Account")'">New User</button></div>
+                }
+                <table id="user-grid">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Department</th>
+                            <th>Role</th>
+                            <th>IsAdmin</th>
+                            <th>IsActive</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            const data = @Html.Raw(Json.Serialize(@Model));
+            const isAdmin = '@isAdmin' == 'True' ? true : false;
+
+            $("#user-grid").DataTable().clear().destroy();
+            let dt;
+
+            if (isAdmin) {
+                dt = $("#user-grid").DataTable({
+                    "columnDefs": [
+                        { "visible": false, "targets": [0, 3] },
+                        { "orderable": false, "targets": [8, 9] },
+                        { "className": "dt-center", "targets": [4, 6, 7, 8] }
+                    ],
+                    "bAutoWidth": false, // Disable the auto width calculation
+                    "aoColumns": [
+                        { "sWidth": null },
+                        { "sWidth": "30%" }, 
+                        { "sWidth": "30%" },
+                        { "sWidth": null },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" }
+                    ],
+                    "order": [[2, 'asc']]
+                });
+            } else {
+                dt = $("#user-grid").DataTable({
+                    "columnDefs": [
+                        { "visible": false, "targets": [0, 3] },
+                        { "orderable": false, "targets": [8, 9] },
+                        { "className": "dt-center", "targets": [4, 6, 7, 8] }
+                    ],
+                    "bAutoWidth": false, // Disable the auto width calculation
+                    "aoColumns": [
+                        { "sWidth": null },
+                        { "sWidth": "30%" }, 
+                        { "sWidth": "30%" },
+                        { "sWidth": null },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" },
+                        { "sWidth": "10%" }
+                    ],
+                    "order": [[2, 'asc']],
+                    "searching": false,
+                    "paging": false
+                });
+            }
+
+            data.forEach(row => {
+                const editUser = `<a class="btn btn-primary" href="/Account/Edit?email=${row.email}">Edit</a>`;
+                const deleteUser = `<a class="btn btn-danger" href="/Account/Delete?email=${row.email}">Delete</a>`;
+                dt.row.add([row.id, row.fullName, row.email, row.password, row.departmentDescription, row.roleDescription, row.isAdmin, row.isActive, editUser, deleteUser]).draw(true);
+            });
+            
+            if (!isAdmin) {
+                $(".btn-danger").hide();
+            }
+        });
+    </script>
+}

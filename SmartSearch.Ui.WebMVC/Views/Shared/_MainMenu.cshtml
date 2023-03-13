@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #fff;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .side-navbar {
+      width: 180px;
+      height: 100%;
+      position: fixed;
+      margin-left: -300px;
+      background-color: #100901;
+      transition: 0.5s;
+    }
+
+    .nav-link:active,
+    .nav-link:focus,
+    .nav-link:hover {
+      background-color: #ffffff;
+    }
+
+    .my-container {
+      transition: 0.4s;
+    }
+
+    .active-nav {
+      margin-left: 0;
+    }
+
+    /* for main section */
+    .active-cont {
+      margin-left: 180px;
+    }
+
+    #menu-btn {
+      background-color: #100901;
+      color: #fff;
+      margin-left: -62px;
+    }
+
+    .my-container input {
+      border-radius: 2rem;
+      padding: 2px 20px;
+    }
+</style>
+
+<div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
+    <ul class="nav flex-column text-white w-100">
+        <li href="#" class="nav-link">
+            <a class="mx-2" href="#">Dashboard</a>
+        </li>
+        <li href="#" class="nav-link">
+            <a class="mx-2" href="#">Users</a>
+        </li>
+    </ul>
+</div>

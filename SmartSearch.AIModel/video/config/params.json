@@ -1,0 +1,1 @@
+{"topic": 10, "chunk_size": 100, "passes": 80, "iterations": 700, "alpha": "auto", "eta": "auto", "random_state": 7, "num_words": 20, "top_n_prob_words": 50, "no_below": 3, "no_above": 0.7, "min_count": 5, "threshold": 60}

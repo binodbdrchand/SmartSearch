@@ -1,0 +1,176 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using SmartSearch.Modules.UserManager.Domain;
+@using SmartSearch.Modules.UserManager.ViewModel;
+
+@model AppUserViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "User::Create";
+
+    var email = Context.Session.GetString("Email");
+    var isAuthenticated = Convert.ToBoolean(Context.Session.GetString("IsAuthenticated"));
+    var isAdmin = Convert.ToBoolean(Context.Session.GetString("IsAdmin"));
+}
+
+@if (!isAuthenticated)
+{
+    Context.Response.Redirect("/");
+}
+
+@section styles {
+    <style>
+        div.row {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+
+        .alert-success {
+            background-color: lightgreen;
+            margin: auto;
+            text-align: center;
+        }
+        .alert-danger {
+            background-color: lightcoral;
+            margin: auto;
+            text-align:center;
+        }
+    </style>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+}
+@if (TempData["FailureMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>@TempData["FailureMessage"]</strong>
+    </div>
+}
+
+<div id="header">
+    <img id="logo-image" src="~/image/banner-logo.png" />
+    <div id="action-buttons">
+        <button id="dashboard" class="btn" onclick="location.href='@Url.Action("Index", "Dashboard")'">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    fill="currentColor" 
+                    class="bi bi-speedometer2" 
+                    viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
+                    <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/>
+            </svg>
+            Dashboard
+        </button>
+        <button id="users" class="btn" onclick="location.href='@Url.Action("List", "Account", new { email = @email, isAdmin = @isAdmin })'">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    fill="currentColor" 
+                    class="bi bi-people" 
+                    viewBox="0 0 16 16">
+                    <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+            </svg>
+            Users
+        </button>
+        <button id="logout-button" class="btn" onclick="location.href='@Url.Action("Logout", "Account")'">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    fill="currentColor" 
+                    class="bi bi-box-arrow-left" 
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                    <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+            </svg>
+            Logout
+        </button>
+    </div>
+</div>
+
+@using (@Html.BeginForm("Edit", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="main">
+        <div class="row">
+            <h2>Edit</h2>
+        </div>
+
+        <div class="row col-md-6" id="new-user-full-name">
+            <div class="col">
+                @Html.LabelFor(m => m.FullName, "Full Name", new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="row col-md-6" id="new-user-email">
+            <div class="col">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control"})
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="row col-md-6" id="new-user-password">
+            <div class="col">
+                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", value = Model.Password})
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        @if (isAdmin)
+        {
+            <div class="row">
+                <div class="col" id="new-user-department">
+                    @Html.LabelFor(m => m.Department, new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.Department, 
+                        new SelectList(Enum.GetValues(typeof(Department))), 
+                        "Select Department", 
+                        new { @class = "form-control"})
+                </div>
+        
+                <div class="col" id="new-user-role">
+                    @Html.LabelFor(m => m.Role, new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.Role, 
+                        new SelectList(Enum.GetValues(typeof(Role))), 
+                        "Select Role", 
+                        new { @class = "form-control"})
+                </div>
+            </div>
+     
+            <div class="row">
+                <div class="col" id="new-user-isadmin">
+                    @Html.LabelFor(m => m.IsAdmin, new { @class = "form-check-label" })
+                    @Html.CheckBoxFor(m => m.IsAdmin, new { @class="form-check-input" })
+                </div>
+        
+                <div class="col" id="new-user-isactive">
+                    @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label" })
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class="form-check-input" })
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.Department)
+            @Html.HiddenFor(model => model.Role)
+            @Html.HiddenFor(model => model.IsAdmin)
+            @Html.HiddenFor(model => model.IsActive)
+        }
+
+        <div class="row" id="submit-button">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+}

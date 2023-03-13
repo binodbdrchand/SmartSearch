@@ -1,0 +1,13 @@
+azure-cognitiveservices-speech==1.19.0
+de_core_news_lg==3.1.0
+en_core_web_lg==3.1.0
+gensim==4.0.1
+langdetect==1.0.9
+moviepy==1.0.3
+nltk==3.6.7
+opencv_python==4.5.4.58
+pandas==1.1.5
+pydub==0.25.1
+pytesseract==0.3.8
+spacy==3.1.1
+SpeechRecognition==3.8.1
